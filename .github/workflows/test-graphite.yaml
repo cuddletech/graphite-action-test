@@ -1,0 +1,26 @@
+on: 
+  workflow_dispatch:
+    inputs:
+      metric_name:
+        description: 'Graphite Metric Name'
+        required: true
+        default: 'test.metric'
+      metric_value:
+        description: 'Graphite Metric Value'
+        required: true
+        default: '123'
+
+jobs:
+  graphite_test:
+    runs-on: ubuntu-latest
+    name: 'Test Graphite'
+    steps:
+      - uses: actions/checkout@v3
+      - id: graphite
+        uses: cuddletech/graphite-action@v1
+        with:
+          graphite_url: ${{ secrets.GRAPHITE_URL }}
+          graphite_key: ${{ secrets.GRAPHITE_KEY }}
+          metric_name: ${{ github.event.inputs.metric_name }}
+          metric_value: ${{ github.event.inputs.metric_value }}
+          
